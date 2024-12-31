@@ -7,57 +7,56 @@ exports.generateItineraryPDF = (itinerary, filePath) => {
     <html>
       <head>
         <style>
-          /* General Styles */
           body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background: #f0f8ff;
-            color: #333;
+            background-color: #f4f4f9;
+            color: #333333;
           }
 
           .container {
             max-width: 900px;
             margin: 20px auto;
-            padding: 40px;
+            padding: 30px;
             background: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-top: 5px solid #007BFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eaeaea;
           }
 
           header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
           }
 
           header h1 {
-            font-size: 40px;
-            color: #ff6347;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 32px;
+            color: #0056b3;
+            margin-bottom: 8px;
+            font-weight: 700;
           }
 
           header h2 {
-            font-size: 28px;
-            color: #20b2aa;
-            font-weight: 600;
+            font-size: 20px;
+            color: #333333;
+            font-weight: 500;
           }
 
           .user-name {
-            font-size: 22px;
-            color: #ff4500;
-            margin-top: 15px;
+            font-size: 16px;
+            color: #666666;
+            margin-top: 5px;
           }
 
           table.itinerary {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 30px;
+            margin-top: 20px;
           }
 
           table.itinerary th {
-            background-color: #007BFF;
+            background-color: #0056b3;
             color: white;
             padding: 12px;
             text-align: left;
@@ -66,52 +65,54 @@ exports.generateItineraryPDF = (itinerary, filePath) => {
 
           table.itinerary td {
             padding: 12px;
-            background-color: #f8f9fa;
-            border: 1px solid #e0e0e0;
+            background-color: #f9f9f9;
+            border: 1px solid #eaeaea;
           }
 
           table.itinerary tr:nth-child(even) {
-            background-color: #e9ecef;
+            background-color: #f4f4f9;
           }
 
           table.itinerary tr:hover {
-            background-color: #dfe4ea;
+            background-color: #e9f1fa;
           }
 
           .highlight {
-            color: #dc3545;
+            color: #d9534f;
             font-weight: bold;
           }
 
-          .flight-hotel {
+          .section-title {
+            font-size: 22px;
+            color: #0056b3;
+            margin-top: 20px;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 5px;
+          }
+
+          .info-box {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #007BFF;
-          }
-
-          .flight-info, .hotel-info {
-            width: 48%;
             padding: 15px;
-            border-radius: 10px;
+            background-color: #f8f9fc;
+            border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            background-color: #e3f2fd;
+            border: 1px solid #d9e2ef;
           }
 
           .places {
-            margin-top: 30px;
-            padding: 25px;
-            background-color: #e3f2fd;
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #fff8e5;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ffcc80;
           }
 
           .places h3 {
-            font-size: 24px;
-            color: #ff5733;
-            margin-bottom: 15px;
-            text-decoration: underline;
+            font-size: 20px;
+            color: #ff9800;
+            margin-bottom: 10px;
           }
 
           .places ul {
@@ -120,26 +121,26 @@ exports.generateItineraryPDF = (itinerary, filePath) => {
           }
 
           .places li {
-            background-color: #ffecd1;
-            padding: 12px;
+            background-color: #fff3e0;
+            padding: 10px;
             border-radius: 5px;
-            margin-bottom: 12px;
-            font-size: 18px;
-            font-weight: bold;
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ffd180;
           }
 
           .footer, .contact-info {
             text-align: center;
             margin-top: 40px;
-            color: #6c757d;
-            font-size: 16px;
+            color: #666666;
+            font-size: 14px;
           }
 
           .contact-info a {
-            color: #007BFF;
+            color: #0056b3;
             text-decoration: none;
-            font-weight: bold;
           }
 
           .contact-info a:hover {
@@ -150,7 +151,7 @@ exports.generateItineraryPDF = (itinerary, filePath) => {
       <body>
         <div class="container">
           <header>
-            <h1>Itinerary Details</h1>
+            <h1>Itinerary Planner</h1>
             <h2>Trip: ${itinerary.startPlace} to ${itinerary.endPlace}</h2>
             <p class="user-name">Welcome, ${itinerary.username}!</p>
           </header>
@@ -171,9 +172,9 @@ exports.generateItineraryPDF = (itinerary, filePath) => {
               .join(", ")}</td></tr>
           </table>
 
-          <div class="flight-hotel">
+          <div class="info-box">
             <div class="flight-info">
-              <h3>Flight Information</h3>
+              <h3 class="section-title">Flight Details</h3>
               <p><strong>Departure:</strong> ${new Date(
                 itinerary.flightDetails[0].departureTime
               ).toLocaleString()}</p>
@@ -187,7 +188,7 @@ exports.generateItineraryPDF = (itinerary, filePath) => {
   }</p>
             </div>
             <div class="hotel-info">
-              <h3>Hotel Information</h3>
+              <h3 class="section-title">Hotel Details</h3>
               <p><strong>Name:</strong> ${itinerary.hotelDetails[0].name}</p>
               <p><strong>Address:</strong> ${
                 itinerary.hotelDetails[0].address
@@ -212,7 +213,7 @@ exports.generateItineraryPDF = (itinerary, filePath) => {
           </div>
 
           <div class="footer">
-            <p>If you need further assistance, feel free to contact us.</p>
+            <p>If you have any queries, feel free to contact us!</p>
           </div>
           <div class="contact-info">
             <p><strong>Company:</strong> Plango</p>
