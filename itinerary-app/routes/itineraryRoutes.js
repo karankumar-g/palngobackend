@@ -4,6 +4,7 @@ const {
   getItineraries,
   getItineraryById,
   downloadItineraryPDF,
+  shareItineraryByEmail,
 } = require("../controllers/itineraryController");
 const { authenticate } = require("../utils/jwt");
 
@@ -20,5 +21,7 @@ router.get("/:id", authenticate, getItineraryById);
 
 // Download itinerary as PDF
 router.get("/:id/download", authenticate, downloadItineraryPDF);
+
+router.post("/:id/share", authenticate, shareItineraryByEmail);
 
 module.exports = router;

@@ -135,3 +135,76 @@ exports.downloadItineraryPDF = async (req, res) => {
       .json({ msg: "Internal server error", error: error.message });
   }
 };
+const nodemailer = require("nodemailer");
+
+// Share Itinerary via Email (POST request)
+exports.shareItineraryByEmail = async (req, res) => {
+  try {
+    const { recipientEmail } = req.body;
+
+    if (!recipientEmail) {
+      return res.status(400).json({ msg: "Recipient email is required" });
+    }
+
+    const itinerary = await Itinerary.findById(req.params.id);
+
+    if (!itinerary || itinerary.userId.toString() !== req.user.id) {
+      return res
+        .status(404)
+        .json({ msg: "Itinerary not found or access denied" });
+    }
+
+    const filePath = path.join(
+      __dirname,
+      "../uploads",
+      `itinerary_${itinerary._id}.pdf`
+    );
+
+    await generateItineraryPDF(itinerary, filePath);
+
+    // Configure nodemailer
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: recipientEmail,
+      subject: `Plan go -  Itinenary is Ready`,
+      text: `Hello,\n\nPlease find attached the itinerary: ${
+        itinerary.title || "Your Itinerary"
+      }.`,
+      attachments: [
+        {
+          filename: `itinerary_${itinerary._id}.pdf`,
+          path: filePath,
+        },
+      ],
+    };
+
+    // Send email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+        return res.status(500).json({ msg: "Error sending email", error });
+      }
+
+      // Delete the temporary file
+      fs.unlink(filePath, (err) => {
+        if (err) console.error("Error deleting file:", err);
+      });
+
+      res
+        .status(200)
+        .json({ msg: "Itinerary shared via email successfully", info });
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ msg: "Internal server error", error: error.message });
+  }
+};

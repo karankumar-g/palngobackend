@@ -8,11 +8,11 @@ const travelRoutes = require("./routes/travelRoutes");
 // const documentRoutes = require("./routes/documentRoutes");
 
 dotenv.config();
-
+const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
+app.use(cors());
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
