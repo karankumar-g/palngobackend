@@ -12,22 +12,22 @@ const itinerarySchema = new mongoose.Schema({
   },
   startPlace: { type: String, required: true },
   endPlace: { type: String, required: true },
-  startDate: { type: Date, required: true },
-  endDate: { type: Date, required: true },
+  startDate: { type: String, required: true },
+  endDate: { type: String, required: true },
   placesToVisit: [
     {
       name: { type: String, required: true },
-      startTime: { type: Date, required: true },
-      endTime: { type: Date, required: true },
+      startTime: { type: String, required: true },
+      endTime: { type: String, required: true },
     },
   ],
   flightDetails: [
     {
       airline: { type: String, required: true },
       flightNumber: { type: String, required: true },
-      boardingTime: { type: Date, required: true },
-      departureTime: { type: Date, required: true },
-      arrivalTime: { type: Date, required: true },
+      boardingTime: { type: String, required: true },
+      departureTime: { type: String, required: true },
+      arrivalTime: { type: String, required: true },
       fromAirport: { type: String, required: true },
       toAirport: { type: String, required: true },
       seatNumber: { type: String },
@@ -37,8 +37,8 @@ const itinerarySchema = new mongoose.Schema({
     {
       name: { type: String, required: true },
       address: { type: String, required: true },
-      checkIn: { type: Date, required: true },
-      checkOut: { type: Date, required: true },
+      checkIn: { type: String, required: true },
+      checkOut: { type: String, required: true },
       rooms: [
         {
           roomNumber: { type: String, required: true },
